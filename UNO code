@@ -1,0 +1,99 @@
+
+#include <LedControl.h>
+
+int DIN = 11;  // orange
+int CS = 7;   // green
+int CLK = 13;  // blue
+
+LedControl lc = LedControl(DIN, CLK, CS, 0);
+
+const int photoPin7 = A7;
+const int photoPin8 = A6;
+const int photoPin9 = A5;
+const int photoPin10 = A4;
+const int photoPin11 = A3;
+const int photoPin12 = A2;
+const int photoPin13 = A1;
+
+boolean isHit = false;
+
+void setup() {
+  Serial.begin(9600);
+
+  lc.shutdown(0, false);
+  lc.setIntensity(0, 0);
+  lc.clearDisplay(0);
+}
+
+void loop() {
+
+  int anInterval = 5000;
+  static unsigned long startTime = millis();
+
+  if (isHit == true) {
+    startTime = millis();
+    isHit = false;
+  }
+
+  if ((millis() - startTime) >= anInterval) {
+    lc.setLed(0, 4, 4, false);
+    lc.setLed(0, 3, 4, false);
+    lc.setLed(0, 2, 3, false);
+    lc.setLed(0, 3, 3, false);
+    lc.setLed(0, 4, 3, false);
+    lc.setLed(0, 5, 3, false);
+    lc.setLed(0, 3, 2, false);
+    isHit = false;
+  }
+
+  if (analogRead(photoPin7) >= 900) {
+    //Serial.println("1 is on");
+    lc.setLed(0, 4, 4, false);
+    delay(200);
+    lc.setLed(0, 4, 4, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin8) >= 900) {
+    // Serial.println("2 is on");
+    lc.setLed(0, 3, 4, false);
+    delay(200);
+    lc.setLed(0, 3, 4, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin9) >= 900) {
+    // Serial.println("3 is on");
+    lc.setLed(0, 5, 3, false);
+    delay(200);
+    lc.setLed(0, 5, 3, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin10) >= 900) {
+    // Serial.println("4 is on");
+    lc.setLed(0, 4, 3, false);
+    delay(200);
+    lc.setLed(0, 4, 3, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin11) >= 900) {
+    //Serial.println("5 is on");
+    lc.setLed(0, 3, 3, false);
+    delay(200);
+    lc.setLed(0, 3, 3, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin12) >= 900) {
+    // Serial.println("6 is on");
+    lc.setLed(0, 2, 3, false);
+    delay(200);
+    lc.setLed(0, 2, 3, true);
+    isHit = true;
+  }
+  if (analogRead(photoPin13) >= 900) {
+    // Serial.println("6 is on");
+    lc.setLed(0, 3, 2, false);
+    delay(200);
+    lc.setLed(0, 3, 2, true);
+    isHit = true;
+  }
+  Serial.println(isHit);
+}
